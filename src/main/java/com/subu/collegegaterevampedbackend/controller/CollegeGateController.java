@@ -1,25 +1,40 @@
 package com.subu.collegegaterevampedbackend.controller;
-
+import com.subu.collegegaterevampedbackend.entity.User;
+import com.subu.collegegaterevampedbackend.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin
 @RequestMapping("api")
 @RestController
 public class CollegeGateController {
     @RequestMapping
     public String getCollegeGateControllers() {
-        return "College Gate Controllers : \n1. student \n2. none \n3. none";
-    }
-    @GetMapping("/students")
-    public String getStudents() {
-        return "List of all students : \n1. Subrata \n2. Alok \n3. Rinika";
+        return "College Gate Controllers : \n1. users \n2. none \n3. none";
     }
 }
 
-@RequestMapping("api/student")
+@CrossOrigin
+@RequestMapping("api/users")
 @RestController
-class StudentController {
+class UserController {
+    @Autowired
+    private UserService userService;
+
+    @GetMapping
+    public List<User> getUsers() {
+        return this.userService.getUsers();
+    }
+
     @GetMapping("/{id}")
-    public String getStudentById(@PathVariable("id") int id) {
-        return "Student ID : "+id;
+    public User getUserById(@PathVariable final long id) {
+        return this.userService.getOneUserById(id);
+    }
+
+    @PostMapping
+    public void saveUser(@RequestBody User user) {
+        userService.storeUser(user);
     }
 }
