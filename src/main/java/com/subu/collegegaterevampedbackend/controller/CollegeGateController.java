@@ -1,6 +1,11 @@
 package com.subu.collegegaterevampedbackend.controller;
+import com.subu.collegegaterevampedbackend.dto.CollegeFullDto;
+import com.subu.collegegaterevampedbackend.dto.CollegeSearchDto;
 import com.subu.collegegaterevampedbackend.dto.UserLoginDto;
+import com.subu.collegegaterevampedbackend.entity.College;
 import com.subu.collegegaterevampedbackend.entity.User;
+import com.subu.collegegaterevampedbackend.service.CollegeService;
+import com.subu.collegegaterevampedbackend.service.CollegeSubjectService;
 import com.subu.collegegaterevampedbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -58,3 +63,35 @@ class UserController {
         }
     }
 }
+
+@CrossOrigin
+@RequestMapping("api/colleges")
+@RestController
+class CollegeController {
+    @Autowired
+    private CollegeService collegeService;
+}
+
+@CrossOrigin
+@RequestMapping("api/cs")
+@RestController
+class CollegeSubject {
+
+    @Autowired
+    private CollegeSubjectService collegeSubjectService;
+
+    @PostMapping("/searchByMarks")
+    public ResponseEntity<Object> searchCollegeByMarks(@RequestBody CollegeSearchDto collegeSearchDto) {
+        List<CollegeFullDto> collegeList;
+        collegeList = collegeSubjectService.searchCollegeBySubject(collegeSearchDto);
+        if(collegeList == null) {
+            return new ResponseEntity<Object>(collegeList, HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<Object>(collegeList, HttpStatus.OK);
+        }
+    }
+}
+
+
+
