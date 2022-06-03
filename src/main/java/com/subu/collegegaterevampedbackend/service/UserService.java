@@ -1,5 +1,6 @@
 package com.subu.collegegaterevampedbackend.service;
 
+import com.subu.collegegaterevampedbackend.dto.UserLoginDto;
 import com.subu.collegegaterevampedbackend.entity.User;
 import com.subu.collegegaterevampedbackend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,9 @@ public class UserService {
     // post
     public void storeUser(User user) {
         userRepository.save(user);
+    }
+
+    public User checkEmail(UserLoginDto userLogin) {
+        return userRepository.findByEmailPassword(userLogin.getEmail(), userLogin.getPassword());
     }
 }

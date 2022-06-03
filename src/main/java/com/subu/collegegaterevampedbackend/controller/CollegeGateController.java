@@ -1,9 +1,14 @@
 package com.subu.collegegaterevampedbackend.controller;
+import com.subu.collegegaterevampedbackend.dto.UserLoginDto;
 import com.subu.collegegaterevampedbackend.entity.User;
 import com.subu.collegegaterevampedbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -36,5 +41,20 @@ class UserController {
     @PostMapping
     public void saveUser(@RequestBody User user) {
         userService.storeUser(user);
+    }
+
+    @PostMapping(path="/checkByEmail", produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> checkUserByEmail(@RequestBody UserLoginDto userLogin) {
+        List<User> userList = new ArrayList<>();
+        System.out.println(userLogin);
+        User user = userService.checkEmail(userLogin);
+        System.out.println(user);
+        if(user == null) {
+            return new ResponseEntity<Object>(userList, HttpStatus.NOT_FOUND);
+        }
+        else {
+            userList.add(user);
+            return new ResponseEntity<Object>(userList, HttpStatus.OK);
+        }
     }
 }
