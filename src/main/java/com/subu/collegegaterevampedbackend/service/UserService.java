@@ -30,4 +30,8 @@ public class UserService {
     public User checkEmail(UserLoginDto userLogin) {
         return userRepository.findByEmailPassword(userLogin.getEmail(), userLogin.getPassword());
     }
+
+    public void delete(Long user_id) {
+        userRepository.deleteById(user_id);
+    }
 }
